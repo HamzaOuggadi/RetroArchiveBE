@@ -17,10 +17,15 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(unique = true, nullable = false)
     private String username;
+    @Column(nullable = false)
     private AppUserRole appUserRole;
+    @Column(nullable = false)
     private LocalDateTime registrationDate;
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
     private List<ArchiveFile> archiveFiles;
