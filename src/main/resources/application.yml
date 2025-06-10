@@ -1,5 +1,9 @@
 spring:
   application:
     name: RetroArchiveBE
-server:
-  port: 9090
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB

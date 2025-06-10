@@ -1,0 +1,11 @@
+server:
+  port: 9090
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password:
+    url: jdbc:mariadb://localhost:3306/retroarchivedb
+  jpa:
+    hibernate:
+      ddl-auto: validate
