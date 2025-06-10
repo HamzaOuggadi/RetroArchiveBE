@@ -26,4 +26,5 @@ public class ArchiveFile {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
+    private long downloads;
 }
