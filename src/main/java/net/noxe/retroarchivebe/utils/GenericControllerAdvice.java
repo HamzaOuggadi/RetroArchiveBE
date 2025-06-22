@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GenericControllerAdvice {
 
     @ExceptionHandler(StorageLoggedException.class)
-    public ResponseEntity<GenericMessage> handleStorageException(StorageLoggedException e) {
+    public ResponseEntity<GenericMessage> handleStorageLoggedException(StorageLoggedException e) {
         GenericMessage message = new GenericMessage(e.getMessage(), e.getStatus());
         return ResponseEntity.status(message.getStatus()).body(message);
     }
