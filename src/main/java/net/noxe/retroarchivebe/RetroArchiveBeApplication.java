@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -18,18 +19,22 @@ public class RetroArchiveBeApplication {
     }
 
     @Bean
-    CommandLineRunner start(AppUserRepository appUserRepository) {
+    CommandLineRunner start(AppUserRepository appUserRepository,
+                            PasswordEncoder passwordEncoder) {
         return args -> {
 
-            AppUser admin = AppUser.builder()
-                    .email("hamza@email.com")
-                    .appUserRole(AppUserRole.ADMIN)
-                    .password("password")
-                    .username("hamza")
-                    .registrationDate(LocalDateTime.now())
-                    .build();
+            if (appUserRepository.findAppUserByEmailIgnoreCase("hamza.ouggadi@gmail.com").isEmpty()) {
+                AppUser admin = AppUser.builder()
+                        .email("hamza.ouggadi@gmail.com")
+                        .appUserRole(AppUserRole.ADMIN)
+                        .password(passwordEncoder.encode("password"))
+                        .username("Noxe")
+                        .registrationDate(LocalDateTime.now())
+                        .build();
 
-            appUserRepository.saveAndFlush(admin);
+                appUserRepository.saveAndFlush(admin);
+            }
+
         };
     }
 

@@ -20,6 +20,7 @@ public class ArchiveFile {
     private String filename;
     @Column(nullable = false)
     private String location;
+    @Enumerated(EnumType.STRING)
     private Category category;
     @Column(nullable = false)
     private LocalDateTime uploadDate;

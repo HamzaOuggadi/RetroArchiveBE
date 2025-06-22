@@ -97,7 +97,7 @@ public class FileServiceImpl implements FileService {
 
         ArchiveFile archiveFile = ArchiveFile.builder()
                 .filename(file.getOriginalFilename())
-                .location(storagePath + "/" + file.getOriginalFilename())
+                .location(storagePath + file.getOriginalFilename())
                 .category(category)
                 .uploadDate(LocalDateTime.now())
                 .appUser(optionalAppUser.get())

@@ -1,6 +1,5 @@
 package net.noxe.retroarchivebe.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.noxe.retroarchivebe.enums.Category;
 import net.noxe.retroarchivebe.services.FileService;
