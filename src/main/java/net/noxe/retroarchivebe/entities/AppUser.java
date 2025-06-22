@@ -2,6 +2,7 @@ package net.noxe.retroarchivebe.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.noxe.retroarchivebe.dtos.AppUserDto;
 import net.noxe.retroarchivebe.enums.AppUserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,6 +37,16 @@ public class AppUser implements UserDetails {
     private List<ArchiveFile> archiveFiles;
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
     private List<Article> articles;
+
+    public AppUserDto toAppUserDto() {
+        return new AppUserDto(
+                email,
+                password,
+                username,
+                appUserRole,
+                registrationDate
+        );
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -2,6 +2,7 @@ package net.noxe.retroarchivebe.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.noxe.retroarchivebe.dtos.ArticleDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,4 +26,14 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
+
+    public ArticleDto toDto() {
+        return new ArticleDto(
+                title,
+                content,
+                images,
+                publishedAt,
+                appUser.getUsername()
+        );
+    }
 }
