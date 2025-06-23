@@ -1,20 +1,20 @@
 package net.noxe.retroarchivebe.services;
 
-import net.noxe.retroarchivebe.dtos.AppUserDto;
 import net.noxe.retroarchivebe.dtos.ArticleDto;
-import net.noxe.retroarchivebe.entities.Article;
+import net.noxe.retroarchivebe.dtos.ArticleRequest;
 
 import java.util.List;
 
 public interface ArticleService {
 
-    Article getArticleByTitle(String title);
-    Article getArticleById(String id);
-    List<Article> getArticlesByUsername(String username);
-    List<Article> getAllArticlesByUserEmail(String email);
+    ArticleDto getArticleByTitle(String title);
+    ArticleDto getArticleById(String id);
+    List<ArticleDto> getArticlesByUsername(String username);
+    List<ArticleDto> getArticlesByUserEmail(String email);
 
-    Article saveArticle(ArticleDto articleDto, AppUserDto appUserDto);
+    ArticleDto saveArticle(ArticleRequest articleRequest);
+    ArticleDto updateArticle(ArticleRequest articleRequest);
 
-    void deleteArticleByTitle(String title);
-    void deleteArticleById(String id);
+    int deleteArticleByTitle(String title);
+    int deleteArticleById(String id);
 }

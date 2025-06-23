@@ -68,7 +68,7 @@ public class FileServiceImpl implements FileService {
         Path filePath = Paths.get(storagePath).resolve(fileData.getFilename()).normalize();
 
         if (!Files.exists(filePath) || !Files.isRegularFile(filePath)) {
-            throw new StorageLoggedException("File with name " + fileName + " not found.", HttpStatus.NOT_FOUND, LOGGER, Level.ERROR);
+            throw new StorageLoggedException("File with name {} not found.", HttpStatus.NOT_FOUND, LOGGER, Level.ERROR, fileName);
         }
 
         fileData.setDownloads(fileData.getDownloads() + 1);
@@ -113,7 +113,7 @@ public class FileServiceImpl implements FileService {
         if (optionalArchiveFile.isPresent()) {
             return optionalArchiveFile.get();
         } else {
-            throw new StorageLoggedException("File with name " + fileName + " not found in the Database.", HttpStatus.NOT_FOUND, LOGGER, Level.ERROR);
+            throw new StorageLoggedException("File with name {} not found in the Database.", HttpStatus.NOT_FOUND, LOGGER, Level.ERROR, fileName);
         }
     }
 

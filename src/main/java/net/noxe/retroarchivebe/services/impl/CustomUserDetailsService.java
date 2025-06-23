@@ -25,6 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return appUserRepository.findAppUserByEmailIgnoreCase(email).orElseThrow( () ->
-                new AppUserLoggedException("User [{}] Not Found", HttpStatus.NOT_FOUND, logger, Level.ERROR, email));
+                new AppUserLoggedException("User {} Not Found", HttpStatus.NOT_FOUND, logger, Level.ERROR, email));
     }
 }

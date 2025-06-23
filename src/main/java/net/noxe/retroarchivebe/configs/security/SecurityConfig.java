@@ -1,7 +1,6 @@
 package net.noxe.retroarchivebe.configs.security;
 
 import lombok.RequiredArgsConstructor;
-import net.noxe.retroarchivebe.services.impl.CustomUserDetailsService;
 import net.noxe.retroarchivebe.utils.CustomAccessDeniedHandler;
 import net.noxe.retroarchivebe.utils.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
@@ -34,10 +33,18 @@ public class SecurityConfig {
                 .headers(headers ->
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/files/upload/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/articles/save/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/articles/update/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/articles/delete-by-title/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/articles/delete-by-id/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/files/download/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/v1/articles/by-title/**").permitAll()
+                        .requestMatchers("/api/v1/articles/by-id/**").permitAll()
+                        .requestMatchers("/api/v1/articles/by-username/**").permitAll()
+                        .requestMatchers("/api/v1/articles/by-email/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception ->

@@ -1,5 +1,6 @@
 package net.noxe.retroarchivebe.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.noxe.retroarchivebe.entities.Article;
 
 import java.time.LocalDateTime;
@@ -10,16 +11,16 @@ public record ArticleDto(
         String content,
         List<String> images,
         LocalDateTime publishedAt,
-        String appUserUsername) {
+        LocalDateTime updatedAt,
+        @JsonProperty("author") String appUserUsername) {
 
     public Article toArticle() {
-        return new Article(
-                null,
-                title,
-                content,
-                images,
-                publishedAt,
-                null
-        );
+        return Article.builder()
+                .title(title)
+                .content(content)
+                .images(images)
+                .publishedAt(publishedAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

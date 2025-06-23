@@ -19,10 +19,12 @@ public class Article {
     private Long id;
     @Column(unique = true, nullable = false)
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private List<String> images;
     @Column(nullable = false)
     private LocalDateTime publishedAt;
+    private LocalDateTime updatedAt;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
@@ -33,6 +35,7 @@ public class Article {
                 content,
                 images,
                 publishedAt,
+                updatedAt,
                 appUser.getUsername()
         );
     }
