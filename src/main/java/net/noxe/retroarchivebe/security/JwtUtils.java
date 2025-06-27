@@ -12,7 +12,11 @@ import java.util.Map;
 @Component
 public class JwtUtils {
 
-    private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
+    private final SecretKey secretKey;
+
+    public JwtUtils() {
+        this.secretKey = Jwts.SIG.HS256.key().build();
+    }
 
     public String generateToken(String email, AppUserRole role) {
         Map<String, Object> claims = new HashMap<>();
@@ -23,13 +27,13 @@ public class JwtUtils {
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Token valid for 10 hours
-                .signWith(SECRET_KEY)
+                .signWith(secretKey)
                 .compact();
     }
 
     public String extractEmail(String token) {
         return Jwts.parser()
-                .verifyWith(SECRET_KEY)
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
@@ -38,7 +42,7 @@ public class JwtUtils {
 
     public String extractRole(String token) {
         return Jwts.parser()
-                .verifyWith(SECRET_KEY)
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
@@ -51,7 +55,7 @@ public class JwtUtils {
 
     public boolean isTokenExpired(String token) {
         Date expiration = Jwts.parser()
-                .verifyWith(SECRET_KEY)
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
