@@ -5,8 +5,12 @@ import net.noxe.retroarchivebe.dtos.AppUserDto;
 import net.noxe.retroarchivebe.dtos.ArticleDto;
 import net.noxe.retroarchivebe.dtos.ArticleRequest;
 import net.noxe.retroarchivebe.entities.AppUser;
+import net.noxe.retroarchivebe.entities.ArchiveFile;
 import net.noxe.retroarchivebe.enums.AppUserRole;
+import net.noxe.retroarchivebe.enums.Category;
 import net.noxe.retroarchivebe.repositories.AppUserRepository;
+import net.noxe.retroarchivebe.repositories.ArticleRepository;
+import net.noxe.retroarchivebe.repositories.FileRepository;
 import net.noxe.retroarchivebe.services.ArticleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class RetroArchiveBeApplication {
@@ -50,9 +55,13 @@ public class RetroArchiveBeApplication {
     @Bean
     @Order(2)
     @Profile("dev")
-    CommandLineRunner startArticles(ArticleService articleService) {
+    CommandLineRunner startArticles(ArticleService articleService,
+                                    FileRepository fileRepository,
+                                    ArticleRepository articleRepository,
+                                    AppUserRepository appUserRepository) {
         return args -> {
             Faker faker = new Faker();
+            Random random = new Random();
 
             AppUserDto appUserDto = new AppUserDto(
                     "hamza.ouggadi@gmail.com",
@@ -62,18 +71,37 @@ public class RetroArchiveBeApplication {
                     LocalDateTime.now()
             );
 
-            ArticleDto articleDto = new ArticleDto(
-                    faker.book().title(),
-                    faker.lorem().paragraph(10),
-                    List.of("file/image1.jpg", "file/image2.jpg"),
-                    LocalDateTime.now(),
-                    LocalDateTime.now(),
-                    "Noxe"
-            );
+            AppUser appUser = appUserRepository.findAppUserByEmailIgnoreCase(appUserDto.email()).orElseThrow();
 
-            ArticleRequest articleRequest = new ArticleRequest(appUserDto, articleDto);
+            for (int i = 0; i < 10; i++) {
+                ArticleDto articleDto = new ArticleDto(
+                        faker.book().title(),
+                        faker.lorem().paragraph(10),
+                        List.of("file/image1.jpg", "file/image2.jpg"),
+                        LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        "Noxe"
+                );
 
-            articleService.saveArticle(articleRequest);
+                ArticleRequest articleRequest = new ArticleRequest(appUserDto, articleDto);
+
+                articleService.saveArticle(articleRequest);
+            }
+
+            for (int i=0; i<10; i++) {
+                String fileName = faker.file().fileName();
+                ArchiveFile archiveFile = ArchiveFile.builder()
+                        .filename(fileName)
+                        .location("file/" + fileName)
+                        .category(random.nextInt() % 2 == 0 ? Category.GAME : Category.SOFTWARE)
+                        .uploadDate(LocalDateTime.now())
+                        .appUser(appUser)
+                        .downloads(0)
+                        .article(articleRepository.findById((long) i+1).orElseThrow())
+                        .build();
+
+                fileRepository.saveAndFlush(archiveFile);
+            }
         };
     }
 

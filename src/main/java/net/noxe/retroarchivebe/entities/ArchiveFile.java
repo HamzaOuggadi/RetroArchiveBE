@@ -2,6 +2,7 @@ package net.noxe.retroarchivebe.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.noxe.retroarchivebe.dtos.ArchiveFileDto;
 import net.noxe.retroarchivebe.enums.Category;
 
 import java.time.LocalDateTime;
@@ -27,5 +28,20 @@ public class ArchiveFile {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
+    @ManyToOne
+    @JoinColumn(name = "article_id")
+    private Article article;
     private long downloads;
+
+    public ArchiveFileDto toDto() {
+        return new ArchiveFileDto(
+                filename,
+                location,
+                category,
+                uploadDate,
+                appUser.getUsername(),
+                article != null ? article.getTitle() : null,
+                downloads
+        );
+    }
 }

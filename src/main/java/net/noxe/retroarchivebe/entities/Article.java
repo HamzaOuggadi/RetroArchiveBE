@@ -22,6 +22,9 @@ public class Article {
     @Column(columnDefinition = "TEXT")
     private String content;
     private List<String> images;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @Column(nullable = true)
+    private List<ArchiveFile> archiveFiles;
     @Column(nullable = false)
     private LocalDateTime publishedAt;
     private LocalDateTime updatedAt;

@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/articles/delete-by-id/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/files/download/**").permitAll()
+                        .requestMatchers("/api/v1/files/data/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/v1/articles/by-title/**").permitAll()
                         .requestMatchers("/api/v1/articles/by-id/**").permitAll()

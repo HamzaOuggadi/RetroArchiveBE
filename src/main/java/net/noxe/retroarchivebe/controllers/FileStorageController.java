@@ -1,6 +1,8 @@
 package net.noxe.retroarchivebe.controllers;
 
 import lombok.RequiredArgsConstructor;
+import net.noxe.retroarchivebe.dtos.ArchiveFileDto;
+import net.noxe.retroarchivebe.entities.ArchiveFile;
 import net.noxe.retroarchivebe.enums.Category;
 import net.noxe.retroarchivebe.services.FileService;
 import net.noxe.retroarchivebe.utils.GenericMessage;
@@ -15,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/files")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class FileStorageController {
 
     private final FileService fileService;
@@ -38,6 +42,17 @@ public class FileStorageController {
                 .ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(fileService.getFile(fileName));
+    }
+
+    @GetMapping("/data")
+    public ResponseEntity<List<ArchiveFileDto>> getAllFilesData() {
+        return ResponseEntity.ok(fileService.getAllFilesData());
+    }
+
+    @GetMapping("/data/{fileName:.+}")
+    public ResponseEntity<ArchiveFileDto> getFileData(@PathVariable String fileName) {
+        ArchiveFile archiveFile = fileService.getFileData(fileName);
+        return ResponseEntity.ok(archiveFile.toDto());
     }
 
 }

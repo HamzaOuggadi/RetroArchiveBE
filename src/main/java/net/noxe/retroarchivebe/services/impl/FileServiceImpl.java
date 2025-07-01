@@ -1,6 +1,7 @@
 package net.noxe.retroarchivebe.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import net.noxe.retroarchivebe.dtos.ArchiveFileDto;
 import net.noxe.retroarchivebe.entities.AppUser;
 import net.noxe.retroarchivebe.entities.ArchiveFile;
 import net.noxe.retroarchivebe.enums.Category;
@@ -27,6 +28,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -115,6 +118,18 @@ public class FileServiceImpl implements FileService {
         } else {
             throw new StorageLoggedException("File with name {} not found in the Database.", HttpStatus.NOT_FOUND, LOGGER, Level.ERROR, fileName);
         }
+    }
+
+    @Override
+    public List<ArchiveFileDto> getAllFilesData() {
+        List<ArchiveFileDto> archiveFileDtoList = new ArrayList<>();
+        fileRepository.findAll().forEach(archiveFile -> {
+            archiveFileDtoList.add(archiveFile.toDto());
+        });
+        if (archiveFileDtoList.isEmpty()) {
+            throw new StorageLoggedException("No files found in the database.", HttpStatus.NOT_FOUND, LOGGER, Level.ERROR);
+        }
+        return archiveFileDtoList;
     }
 
 }
